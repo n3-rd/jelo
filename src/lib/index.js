@@ -9,6 +9,8 @@ import {
 	sendNotification
 } from '@tauri-apps/api/notification';
 
+import { createDir, BaseDirectory } from '@tauri-apps/api/fs';
+
 /**
  * @type {string}
  */
@@ -30,6 +32,7 @@ export const compressImage = async (
 };
 
 export const checkout = async () => {
+	createAppFolder();
 	/**
 	 * @type {any}
 	 */
@@ -73,4 +76,8 @@ export const notify = async (/** @type {string} */ title, /** @type {string} */ 
 	if (permissionGranted) {
 		sendNotification({ title: title, body: body });
 	}
+};
+
+export const createAppFolder = async () => {
+	await createDir('jelo', { dir: BaseDirectory.Picture, recursive: true });
 };

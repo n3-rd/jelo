@@ -30,7 +30,7 @@
 			class="dropzone h-[78%] w-[78%] flex justify-center items-center border-2 border-white border-dashed rounded-xl bg-[#222]"
 			class:droppable={files.length > 0}
 		>
-			<h2 class="text-5xl font-semibold">Drop Images to compress</h2>
+			<h2 class="text-5xl font-semibold text-center">Drop Images to compress</h2>
 		</div>
 	</FileDrop>
 </div>

@@ -2,8 +2,6 @@
 	import { checkout } from '$lib';
 	import { debugText, imageQuality } from '$lib/store';
 	import { RangeSlider } from '@skeletonlabs/skeleton';
-	import { slide } from 'svelte/transition';
-	import { quintOut } from 'svelte/easing';
 
 	let dText = '';
 	let quality = 0;
@@ -17,8 +15,10 @@
 </script>
 
 <div class="h-14 w-full flex justify-between px-24">
-	<div class="debug flex h-full w-[43.33%] justify-center items-center px-7">
-		<div>{dText}</div>
+	<div
+		class="debug flex h-full w-[43.33%] justify-center items-center px-7 max-h-full overflow-auto"
+	>
+		<div class="whitespace-normal break-words">{dText}</div>
 	</div>
 
 	<div class="quality flex justify-center items-center w-[43.33%]">
