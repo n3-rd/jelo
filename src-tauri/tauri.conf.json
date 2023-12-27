@@ -15,6 +15,16 @@
       "all": false,
       "path": {
         "all": true
+      },
+      "fs": {
+        "all": true,
+        "readFile": true,
+        "readDir": true,
+        "createDir": true,
+        "exists": true,
+        "scope": [
+          "$PICTURE/*"
+        ]
       }
     },
     "bundle": {
