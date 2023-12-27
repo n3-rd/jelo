@@ -45,7 +45,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18.0.0'
+          node-version: '18.13'
           cache: 'pnpm'
 
       - name: Install frontend dependencies
