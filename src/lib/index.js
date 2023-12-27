@@ -3,6 +3,12 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { debugText, imagesToCompress, imageQuality } from './store';
 
 import { pictureDir } from '@tauri-apps/api/path';
+import {
+	isPermissionGranted,
+	requestPermission,
+	sendNotification
+} from '@tauri-apps/api/notification';
+
 /**
  * @type {string}
  */
@@ -46,9 +52,25 @@ export const checkout = async () => {
 		)}.${fileExtension}`;
 		await compressImage(path, outputFileName, quality);
 		setDebugText(`compressed ${path} to ${outputFileName} with quality ${quality}`);
+		let compressedCount = 0;
+		imagesToCompress.subscribe((value) => {
+			compressedCount = value.length;
+		});
+		notify('Jelo', `compressed ${compressedCount} images successfully`);
 	}
 };
 
 export const setDebugText = (/** @type {string} */ text) => {
 	debugText.set(text);
+};
+
+export const notify = async (/** @type {string} */ title, /** @type {string} */ body) => {
+	let permissionGranted = await isPermissionGranted();
+	if (!permissionGranted) {
+		const permission = await requestPermission();
+		permissionGranted = permission === 'granted';
+	}
+	if (permissionGranted) {
+		sendNotification({ title: title, body: body });
+	}
 };

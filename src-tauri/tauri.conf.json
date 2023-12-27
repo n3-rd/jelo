@@ -25,6 +25,9 @@
         "scope": [
           "$PICTURE/*"
         ]
+      },
+      "notification": {
+        "all": true
       }
     },
     "bundle": {

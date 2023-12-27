@@ -2,6 +2,8 @@
 	import { checkout } from '$lib';
 	import { debugText, imageQuality } from '$lib/store';
 	import { RangeSlider } from '@skeletonlabs/skeleton';
+	import { slide } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 
 	let dText = '';
 	let quality = 0;
@@ -57,7 +59,13 @@
 					stroke-linejoin="round"><path d="M3 20h18L12 4z" /></svg
 				></span
 			>
-			<span>Resize</span>
+			<span>
+				{#if quality > 50}
+					<span class="transition-all duration-150 ease-in-out"> Decompress </span>
+				{:else}
+					<span class="transition-all duration-150 ease-in-out"> Compress </span>
+				{/if}
+			</span>
 		</button>
 	</div>
 </div>
