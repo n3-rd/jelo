@@ -1,13 +1,15 @@
 <script>
 	import { checkout } from '$lib';
-	import { debugText, imageQuality } from '$lib/store';
+	import { debugText, imageQuality, compressing } from '$lib/store';
 	import { RangeSlider } from '@skeletonlabs/skeleton';
 
 	let dText = '';
 	let quality = 0;
+	let imageCompressing = false;
 	$: {
 		dText = $debugText;
 		quality = $imageQuality;
+		imageCompressing = $compressing;
 	}
 
 	let max = 90;
@@ -42,6 +44,7 @@
 	<div class="flex justify-center items-center w-[23.33%]">
 		<button
 			class="btn variant-filled"
+			disabled={imageCompressing}
 			on:click={() => {
 				checkout();
 			}}
