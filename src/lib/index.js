@@ -22,62 +22,90 @@ pictureDir().then((dir) => {
 });
 
 export const compressImage = async (
-	/** @type {string} */ inputPath,
+	/** @type {any} */ inputPath,
 	/** @type {string} */ outputPath,
-	/** @type {Number} */ quality
+	/** @type {number} */ quality
 ) => {
-	await invoke('compress_image_command', { inputPath, outputPath, quality }).catch((e) => {
-		throw new Error(e);
-	});
+	try {
+		await invoke('compress_image_command', { inputPath, outputPath, quality });
+	} catch (/**
+	 * @type {any}
+	 */ e) {
+		throw new Error(
+			`Failed to compress image at ${inputPath} to ${outputPath} with quality ${quality}: ${e.message}`
+		);
+	}
 };
 
 export const checkout = async () => {
-	createAppFolder();
-	/**
-	 * @type {any}
-	 */
-	let images = [];
-	imagesToCompress.subscribe((value) => {
-		images = value;
-	});
-	let quality = 0;
-	imageQuality.subscribe((value) => {
-		quality = value;
-	});
-
-	for (const path of images) {
-		setDebugText(`compressing ${path} with quality ${quality}`);
-		let fileName = path.split('/').pop();
-		let fileExtension = fileName.split('.').pop();
-		fileName = fileName.split('.').slice(0, -1).join('.');
-		let outputFileName = `${pictureDirPath}/jelo/${fileName}-${Math.ceil(
-			Math.random() * 47
-		)}.${fileExtension}`;
-		await compressImage(path, outputFileName, quality);
-		setDebugText(`compressed ${path} to ${outputFileName} with quality ${quality}`);
-		let compressedCount = 0;
+	try {
+		createAppFolder();
+		/**
+		 * @type {any[]}
+		 */
+		let images = [];
 		imagesToCompress.subscribe((value) => {
-			compressedCount = value.length;
+			images = value;
 		});
-		notify('Jelo', `compressed ${compressedCount} images successfully`);
-	}
-};
+		let quality = 0;
+		imageQuality.subscribe((value) => {
+			quality = value;
+		});
 
-export const setDebugText = (/** @type {string} */ text) => {
-	debugText.set(text);
+		for (const path of images) {
+			setDebugText(`compressing ${path} with quality ${quality}`);
+			let fileName = path.split('/').pop();
+			let fileExtension = fileName.split('.').pop();
+			fileName = fileName.split('.').slice(0, -1).join('.');
+			let outputFileName = `${pictureDirPath}/jelo/${fileName}-${Math.ceil(
+				Math.random() * 47
+			)}.${fileExtension}`;
+			await compressImage(path, outputFileName, quality);
+			setDebugText(`compressed ${path} to ${outputFileName} with quality ${quality}`);
+			let compressedCount = 0;
+			imagesToCompress.subscribe((value) => {
+				compressedCount = value.length;
+			});
+			notify('Jelo', `compressed ${compressedCount} images successfully`);
+		}
+	} catch (/**
+	 * @type {any}
+	 */ e) {
+		setDebugText(`Failed to compress images: ${e.message}`);
+	}
 };
 
 export const notify = async (/** @type {string} */ title, /** @type {string} */ body) => {
-	let permissionGranted = await isPermissionGranted();
-	if (!permissionGranted) {
-		const permission = await requestPermission();
-		permissionGranted = permission === 'granted';
-	}
-	if (permissionGranted) {
-		sendNotification({ title: title, body: body });
+	try {
+		let permissionGranted = await isPermissionGranted();
+		if (!permissionGranted) {
+			const permission = await requestPermission();
+			permissionGranted = permission === 'granted';
+		}
+		if (permissionGranted) {
+			sendNotification({ title: title, body: body });
+		}
+	} catch (
+		/**
+		 * @type {any}
+		 */
+		e
+	) {
+		console.error(`Failed to send notification: ${e.message}`);
 	}
 };
 
 export const createAppFolder = async () => {
-	await createDir('jelo', { dir: BaseDirectory.Picture, recursive: true });
+	try {
+		await createDir('jelo', { dir: BaseDirectory.Picture, recursive: true });
+	} catch (/**
+	 * @type {any}
+	 */ e) {
+		throw new Error(`Failed to create app folder: ${e.message}`);
+	}
+};
+
+export const setDebugText = (/** @type {string} */ text) => {
+	debugText.set('');
+	debugText.set(text);
 };
