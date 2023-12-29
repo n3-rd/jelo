@@ -1,25 +1,10 @@
 <script>
-	import { compressImage, setDebugText } from '$lib';
+	import { setDebugText } from '$lib';
 	import { imagesToCompress } from '$lib/store';
 
 	import FileDrop from 'svelte-tauri-filedrop';
 
-	const extensions = [
-		'png',
-		'jpg',
-		'webp',
-		'gif',
-		'bmp',
-		'tiff',
-		'svg',
-		'PNG',
-		'JPG',
-		'WEBP',
-		'GIF',
-		'BMP',
-		'TIFF',
-		'SVG'
-	];
+	const extensions = ['jpg', 'jpeg', 'JPG', 'JPEG', 'png', 'PNG', 'webp', 'WEBP'];
 
 	/**
 	 *

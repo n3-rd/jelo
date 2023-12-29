@@ -1,13 +1,16 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use std::path::Path;
+use image::codecs::jpeg::JpegEncoder;
 use std::fs::File;
 use std::io::BufWriter;
-use image::{DynamicImage, GenericImageView};
-use image::codecs::jpeg::JpegEncoder;
+use std::path::Path;
 
 #[tauri::command]
-fn compress_image_command(input_path: String, output_path: String, quality: u8) -> Result<(), String> {
+fn compress_image_command(
+    input_path: String,
+    output_path: String,
+    quality: u8,
+) -> Result<(), String> {
     let input_path = Path::new(&input_path);
     let output_path = Path::new(&output_path);
 
@@ -28,8 +31,8 @@ fn compress_image_command(input_path: String, output_path: String, quality: u8) 
 }
 
 fn main() {
-  tauri::Builder::default()
-  .invoke_handler(tauri::generate_handler![compress_image_command])
-    .run(tauri::generate_context!())
-    .expect("error while running tauri application");
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![compress_image_command])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
 }

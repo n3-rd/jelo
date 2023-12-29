@@ -55,11 +55,11 @@ export const checkout = async () => {
 		for (const path of images) {
 			setDebugText(`compressing ${path} with quality ${quality}`);
 			let fileName = path.split('/').pop();
-			let fileExtension = fileName.split('.').pop();
+			let fileExtension = 'jpg';
 			fileName = fileName.split('.').slice(0, -1).join('.');
 			let outputFileName = `${pictureDirPath}/jelo/${fileName}-${Math.ceil(
-				Math.random() * 47
-			)}.${fileExtension}`;
+				Math.random() * 4000
+			)}-${quality}.${fileExtension}`;
 			await compressImage(path, outputFileName, quality);
 			setDebugText(`compressed ${path} to ${outputFileName} with quality ${quality}`);
 			let compressedCount = 0;
