@@ -1,6 +1,6 @@
 // place files you want to import through the `$lib` alias in this folder.
 import { invoke } from '@tauri-apps/api/tauri';
-import { debugText, imagesToCompress, imageQuality } from './store';
+import { debugText, imagesToCompress, imageQuality, compressing } from './store';
 
 import { pictureDir } from '@tauri-apps/api/path';
 import {
@@ -22,15 +22,18 @@ pictureDir().then((dir) => {
 });
 
 export const compressImage = async (
-	/** @type {any} */ inputPath,
+	/** @type {string} */ inputPath,
 	/** @type {string} */ outputPath,
 	/** @type {number} */ quality
 ) => {
 	try {
+		compressing.set(true);
 		await invoke('compress_image_command', { inputPath, outputPath, quality });
+		compressing.set(false);
 	} catch (/**
 	 * @type {any}
 	 */ e) {
+		compressing.set(false);
 		throw new Error(
 			`Failed to compress image at ${inputPath} to ${outputPath} with quality ${quality}: ${e.message}`
 		);
@@ -59,18 +62,16 @@ export const checkout = async () => {
 			fileName = fileName.split('.').slice(0, -1).join('.');
 			let outputFileName = `${pictureDirPath}/jelo/${fileName}-${Math.ceil(
 				Math.random() * 4000
-			)}-${quality}.${fileExtension}`;
+			)}-${quality}%.${fileExtension}`;
 			await compressImage(path, outputFileName, quality);
 			setDebugText(`compressed ${path} to ${outputFileName} with quality ${quality}`);
-			let compressedCount = 0;
-			imagesToCompress.subscribe((value) => {
-				compressedCount = value.length;
-			});
-			notify('Jelo', `compressed ${compressedCount} images successfully`);
 		}
+		notify('Jelo', `compressed ${images.length} images successfully`);
+		imagesToCompress.set([]); // Clear the image count
 	} catch (/**
 	 * @type {any}
 	 */ e) {
+		compressing.set(false);
 		setDebugText(`Failed to compress images: ${e.message}`);
 	}
 };

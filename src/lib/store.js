@@ -5,3 +5,5 @@ export const imagesToCompress = writable([]);
 export const debugText = writable('');
 
 export const imageQuality = writable(50);
+
+export const compressing = writable(false);
