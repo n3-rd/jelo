@@ -1,38 +1,51 @@
-# create-svelte
+# Jelo
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+![e](https://gcdnb.pbrd.co/images/jeBPt90aTc4U.png?o=1)
 
-## Creating a project
+# **A simple jpeg image compressor**
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Installation
+
+### Linux
+
+Jelo is available via debian:
+[jelo_1.0.0_amd64.deb](https://github.com/n3-rd/jelo/releases/download/main/jelo_1.0.0_amd64.deb)
+
+### Windows
+
+Download windows executable below:
+[jelo_1.0.0_x64-setup.exe](https://github.com/n3-rd/jelo/releases/download/main/jelo_1.0.0_x64-setup.exe)
+
+### MacOS
+
+Jelo is currently as a `dmg` file, support for Homebrew will be added soon:
+[jelo_1.0.0_x64.dmg](https://github.com/n3-rd/jelo/releases/download/main/jelo_1.0.0_x64.dmg)
+
+### Appimage
+
+[Download Appimage](https://github.com/n3-rd/jelo/releases/download/main/jelo_1.0.0_amd64.AppImage)
+
+## Building
+
+Blackprint is built using [Tauri](https://tauri.app), so you will require NodeJS and Rust to build.
+
+#### Developing
+
+Once you've cloned the project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
+npm run tauri dev
 
 # or start the server and open the app in a new browser tab
 npm run dev -- --open
 ```
 
-## Building
-
-To create a production version of your app:
+To create a production version of the app:
 
 ```bash
-npm run build
+npm run tauri build
 ```
 
-You can preview the production build with `npm run preview`.
+## Contributing
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+Contributions are always welcome!
